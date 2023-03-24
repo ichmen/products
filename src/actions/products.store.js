@@ -1,14 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
 
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-// const reducer = combineReducers({
-//   dashboard: dashboardReducer,
-//   mode: modeReducer,
-//   calendar: calendarReducer,
-//   search: searchReducer,
-// });
+import { productsReducer } from "./products.reducer";
 
-// export const store = createStore(
-//   reducer,
-//   composeEnhancers(applyMiddleware(thunk))
-// );
+// eslint-disable-next-line no-undef
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export const store = configureStore(
+  {
+    // productsReducer,
+    reducer: {
+      products: productsReducer,
+    },
+  },
+  composeEnhancers(applyMiddleware(thunk))
+);

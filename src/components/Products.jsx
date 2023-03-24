@@ -1,20 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 
-export default function Products() {
+import { productsSelector } from "../actions/products.selector";
+import { getProducts } from "../actions/products.actions";
+
+function Products({ getProducts, products }) {
+  useEffect(() => getProducts(), []);
+  if (!products) {
+    return null;
+  }
   return (
     <table className="products-table">
       <thead className="products-table__head">
         <tr>
-          <th className="products-table__head">Id</th>
-          <th className="products-table__head">Name</th>
-          <th className="products-table__head">Description</th>
-          <th className="products-table__head">Price</th>
+          <th className="products-table__head">
+            Id <button>Id</button>
+          </th>
+          <th className="products-table__head">
+            <button>Name</button>
+          </th>
+          <th className="products-table__head">
+            {" "}
+            <button>Description</button>
+          </th>
+          <th className="products-table__head">
+            <button>Price</button>
+          </th>
           <th className="products-table__head">Picture</th>
           <th className="products-table__head">Rating</th>
           <th className="products-table__head">Stock</th>
           <th className="products-table__head">Category</th>
         </tr>
       </thead>
+      <tbody>
+        {products.map((product) => {
+          return (
+            <tr>
+              <th className="products-table__item">{product.id}</th>
+              <th className="products-table__item">{product.title}</th>
+              <th className="products-table__item">{product.description}</th>
+              <th className="products-table__item">{product.price}</th>
+              <th className="products-table__item">
+                <img
+                  src={product.thumbnail}
+                  alt="logo"
+                  className="products-table__image"
+                />
+              </th>
+              <th className="products-table__item">{product.rating}</th>
+              <th className="products-table__item">{product.stock}</th>
+              <th className="products-table__item">{product.category}</th>
+            </tr>
+          );
+        })}
+      </tbody>
     </table>
   );
 }
+
+const mapState = (state) => ({ products: productsSelector(state) });
+
+const mapDispatch = { getProducts };
+
+export default connect(mapState, mapDispatch)(Products);

@@ -1,5 +1,5 @@
-import "./App.scss";
-import "./styles/index.scss";
+// import "./App.scss";
+// import "./styles/index.scss";
 import Header from "../src/components/Header";
 import Search from "../src/components/Search";
 import Products from "../src/components/Products";

@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 
 import { productsSelector } from "../actions/products.selector";
 import { getProducts } from "../actions/products.actions";
+import { searchSelector } from "../actions/search.selector";
 
-function Products({ getProducts, products }) {
+function Products({ getProducts, products, searchString }) {
   useEffect(() => getProducts(), []);
   const [sortString, setSortString] = useState("id");
   if (!products) {
@@ -22,32 +23,49 @@ function Products({ getProducts, products }) {
             Id <button onClick={() => sortHandler("id")}>↑</button>
           </th>
           <th className="products-table__head">
-            <button onClick={() => sortHandler("price")}>Name</button>
+            <button onClick={() => sortHandler("title")}>Name</button>
           </th>
           <th className="products-table__head">
-            {" "}
-            <button>Description</button>
+            <button onClick={() => sortHandler("description")}>
+              Description
+            </button>
           </th>
           <th className="products-table__head">
-            <button>Price</button>
+            <button onClick={() => sortHandler("price")}>Price</button>
           </th>
           <th className="products-table__head">Picture</th>
-          <th className="products-table__head">Rating</th>
-          <th className="products-table__head">Stock</th>
-          <th className="products-table__head">Category</th>
+          <th className="products-table__head">
+            <button onClick={() => sortHandler("rating")}>Rating</button>
+          </th>
+          <th className="products-table__head">
+            <button onClick={() => sortHandler("stock")}>Stock</button>
+          </th>
+          <th className="products-table__head">
+            <button onClick={() => sortHandler("category")}>Category</button>
+          </th>
         </tr>
       </thead>
       <tbody>
         {products
           .slice()
-          .sort((prod1, prod2) =>
-          
-          if(typeof )
-            prod1[sortString]
-              .toString()
-              .localeCompare(prod2[sortString].toString())
+          .filter(
+            (el) =>
+              el.title.includes(searchString) ||
+              el.category.includes(searchString)
           )
-
+          .sort((prod1, prod2) => {
+            const [firstElem, secondElem] = [
+              prod1[sortString],
+              prod2[sortString],
+            ];
+            if (
+              typeof firstElem === "number" &&
+              typeof secondElem === "number"
+            ) {
+              return firstElem - secondElem;
+            }
+            return firstElem.toString().localeCompare(secondElem.toString());
+          })
           .map((product) => {
             return (
               <tr key={product.id}>
@@ -73,7 +91,10 @@ function Products({ getProducts, products }) {
   );
 }
 
-const mapState = (state) => ({ products: productsSelector(state) });
+const mapState = (state) => ({
+  products: productsSelector(state),
+  searchString: searchSelector(state),
+});
 
 const mapDispatch = { getProducts };
 

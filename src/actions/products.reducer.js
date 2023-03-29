@@ -13,7 +13,10 @@ export function productsReducer(state = initialState, action) {
       return { ...state, products: action.payload };
 
     case PRODUCT_DELETED:
-      return { ...state, products: action.payload };
+      const newProducts = state.products.filter(
+        ({ id }) => id !== action.payload
+      );
+      return { ...state, products: newProducts };
 
     default:
       return state;

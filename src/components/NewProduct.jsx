@@ -1,9 +1,11 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { StyledForm } from "./NewProductStyled";
+import { setNewProductVisibility } from "../actions/newProduct.action";
+import { newProductSelector } from "../actions/newProduct.selector";
+import { connect } from "react-redux";
 
-export default function NewProduct() {
+function NewProduct({ isVisible, setVisibility }) {
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -13,6 +15,7 @@ export default function NewProduct() {
     },
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      setVisibility(false);
     },
 
     validationSchema: Yup.object({
@@ -35,9 +38,13 @@ export default function NewProduct() {
         .required("Required"),
     }),
   });
+  if (!isVisible) {
+    return null;
+  }
   return (
-    <StyledForm>
-      <form onSubmit={formik.handleSubmit}>
+    <div className="new-product__container">
+      <form onSubmit={formik.handleSubmit} className="new-product__form">
+        <h3 className="new-product__title">New product</h3>
         <label htmlFor="title">Title</label>
         <input
           id="title"
@@ -46,7 +53,7 @@ export default function NewProduct() {
           onChange={formik.handleChange}
           value={formik.values.title}
         />
-        <div className="error">{formik.errors.title || null}</div>
+        <div className="new-product__error">{formik.errors.title || null}</div>
         <label htmlFor="author">Author</label>
         <input
           id="author"
@@ -55,7 +62,11 @@ export default function NewProduct() {
           onChange={formik.handleChange}
           value={formik.values.author}
         />
-        {<div className="error">{formik.errors.author || null}</div>}
+        {
+          <div className="new-product__error">
+            {formik.errors.author || null}
+          </div>
+        }
         <label htmlFor="year">Year</label>
         <input
           id="year"
@@ -64,7 +75,7 @@ export default function NewProduct() {
           onChange={formik.handleChange}
           value={formik.values.year}
         />
-        {<div className="error">{formik.errors.year || null}</div>}
+        {<div className="new-product__error">{formik.errors.year || null}</div>}
         <label htmlFor="rating">Rating</label>
         <input
           id="rating"
@@ -73,13 +84,30 @@ export default function NewProduct() {
           onChange={formik.handleChange}
           value={formik.values.rating}
         />
-
-        {<div className="error">{formik.errors.rating || null}</div>}
-        <button type="submit">Submit</button>
-        <button>Cancel</button>
+        {
+          <div className="new-product__error">
+            {formik.errors.rating || null}
+          </div>
+        }
+        <div className="new-product__buttons-container">
+          <button type="submit" className="new-product__button">
+            Submit
+          </button>
+          <button
+            className="new-product__button"
+            onClick={() => setVisibility(false)}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
-    </StyledForm>
+    </div>
   );
 }
 
-// Назва, Автор, Рік видання, Рейтинг.
+const mapDispatch = { setVisibility: setNewProductVisibility };
+const mapState = (state) => ({
+  isVisible: newProductSelector(state),
+});
+
+export default connect(mapState, mapDispatch)(NewProduct);

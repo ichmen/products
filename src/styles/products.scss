@@ -1,6 +1,23 @@
 .products-table{
+    width: 100%;
+&__head{
+    background-color: grey;
+    color:white;
+    
+}
 
+&__button{
+margin: 2px;
+}
     &__image{
         max-height: 40px;
+    }
+    &__item{
+        cursor: pointer;
+        &:nth-child(even){background-color: #e4e4e4;}
+        &:hover{
+            background-color: bisque;
+        }
+     
     }
 }

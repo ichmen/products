@@ -1,0 +1,11 @@
+.add-button{
+    border: none;
+    background-color: blue;
+    color: white;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover{
+        opacity: 0.5;
+    }
+}

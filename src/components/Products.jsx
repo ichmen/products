@@ -7,6 +7,7 @@ import { searchSelector } from "../actions/search.selector";
 import { deleteProduct } from "../actions/products.actions";
 
 function Products({ getProducts, products, searchString, deleteProduct }) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getProducts(), []);
   const [sortString, setSortString] = useState("id");
   if (!products) {
@@ -20,7 +21,7 @@ function Products({ getProducts, products, searchString, deleteProduct }) {
     <table className="products-table">
       <thead>
         <tr>
-          <th className="products-table__head products-table__id">
+          <th className="products-table__head ">
             <button
               onClick={() => sortHandler("id")}
               className="products-table__button"

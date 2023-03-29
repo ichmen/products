@@ -7,5 +7,5 @@ export async function fetchProducts() {
 }
 
 export function deleteProduct(id) {
-  axios.delete(`${baseURL}/${id}`).then((response) => console.log(response));
+  // axios.delete(`${baseURL}/${id}`).then((response) => console.log(response));
 }
